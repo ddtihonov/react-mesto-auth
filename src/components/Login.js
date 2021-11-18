@@ -1,31 +1,17 @@
 import React from 'react';
+import { useEffect } from 'react';
 
-class Login extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            username: '',
-            password: ''
-    }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
 
-    }
-    handleChange(e) {
-        const {name, value} = e.target;
-        this.setState({
-        [name]: value
-        });
-    }
-    handleSubmit(e){
-        e.preventDefault();
-    }
+export default function Login ({setCurrentRoute}) {
 
-    render(){
+    useEffect(() => {
+        setCurrentRoute('/sign-in');
+    }, []);
+    
         return(
         <div className="login">
             <h2 className="login__title">Вход</h2>
-            <form className="login__form"  onSubmit={this.handleSubmit}>
+            <form className="login__form">
                 <label className="login__label">
                     <input className="login__input"
                     type="email" 
@@ -49,7 +35,4 @@ class Login extends React.Component {
             </form>
         </div>
     )
-    }
 }
-
-export default Login;

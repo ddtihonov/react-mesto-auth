@@ -9,6 +9,7 @@ export default function InfoTooltip (props) {
         text="Что-то пошло не так!
         Попробуйте ещё раз." 
         image=""
+        alt=""
         isOpen={props.isOpen}
         onClose={props.onClose}
         />

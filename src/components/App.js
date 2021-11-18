@@ -8,27 +8,36 @@ import api  from '../utils/Api.js';
 import Login from './Login.js';
 import Register from './Register.js';
 import InfoTooltip from './InfoTooltip.js';
+import ProtectedRoute from './ProtectedRoute.js';
 
 import ImagePopup  from './ImagePopup.js';
 import DeleteCardPopup from './DeleteCardPopup.js';
 import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js'
-import AddPlacePopup from './AddPlasePopup.js';
+import AddPlacePopup from './AddPlacePopup.js';
 
 
 export default function App() {
 
+    //стейты popups
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
-    const [selectedCard, setSelectedCard] = useState({});
     const [isImagePopupOpen, setImagePopupOpen] = useState(false);
     const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = useState(false);
     const [isInfoTooltip, setIsInfoTooltip] = useState(false);
 
+    const [selectedCard, setSelectedCard] = useState({});
     const [currentUser, setCurrentUser] = useState({});
     const [cards, setCards] = useState([]);
 
+    // стейт маршрутов
+    const [currentRoute, setCurrentRoute] = useState('');
+
+    //стейт логина
+    const [loggedIn, setLoggedIn] = useState(false);
+
+    // запрос  данных пользователя
     useEffect(() => {
         api.getUserInfo()
             .then((userInfo) => {
@@ -39,6 +48,7 @@ export default function App() {
             });
     }, []);
 
+    //запроса массива данных карточек
     useEffect(() => {
         api.getInitialCards()
             .then((cardsInfo) => {
@@ -49,6 +59,7 @@ export default function App() {
             });
     }, []);
     
+    // открытие всех popup
     const handleEditAvatarClick = () => {
         setIsEditAvatarPopupOpen(true);
     }
@@ -69,7 +80,12 @@ export default function App() {
         setIsInfoTooltip(true);
     }
 
+    const handleCardClick = (data) => {
+        setImagePopupOpen(true);
+        setSelectedCard(data);
+    }
 
+    // закрытие всех popup
     const closeAllPopups = () => {
         setIsEditAvatarPopupOpen(false);
         setIsAddPlacePopupOpen(false);
@@ -79,11 +95,7 @@ export default function App() {
         setIsInfoTooltip(false);
     }
 
-    const handleCardClick = (data) => {
-        setImagePopupOpen(true);
-        setSelectedCard(data);
-    }
-
+    //управление лайками
     function handleCardLike(card) {
         const isLiked = card.likes.some((i) => i._id === currentUser._id);
     
@@ -98,6 +110,7 @@ export default function App() {
             });
     }
 
+    //удаление карты
     function handleCardDelete(card) {
         api.deleteCard(card._id)
             .then(() => {
@@ -109,6 +122,7 @@ export default function App() {
             });
     }
 
+    //смена данных пользователя
     function handleUpdateUser(data) {
         api.setUserInfo(data)
             .then((userInfo) => {
@@ -120,6 +134,7 @@ export default function App() {
             });
     }
 
+    //смена аватара
     function handleUpdateAvatar(data) {
         api.addAvatar(data)
             .then((userAvatar) => {
@@ -130,7 +145,8 @@ export default function App() {
                 console.log(`Внимание! ${err}`);
             });
     }
-
+    
+    //добавление новой карты
     function handleAddCard(element) {
         api.addCard(element)
                 .then((newCard) => {
@@ -145,12 +161,13 @@ export default function App() {
 return (
 <div className="page">
     <CurrentUserContext.Provider value={currentUser}>
-        <Header />
-        <Register
-            onInfoTooltip={handleRegisterClick}
+        <Header 
+            currentRoute={currentRoute}
+            loggedIn={loggedIn}
         />
-        <Login />
-                <Main 
+        <Routes>
+            <Route exact path="/" element={
+            <Main 
                     onEditAvatar={handleEditAvatarClick}
                     onAddPlace={handleAddPlaceClick}
                     onEditProfile={handleEditProfileClick}
@@ -159,7 +176,21 @@ return (
                     onCardLike={handleCardLike}
                     onCardDelete={handleCardDelete}
                 />
-        <Footer />
+            } />
+            <Route exact path="/sign-up" element={
+                <Register
+                    setCurrentRoute={setCurrentRoute}
+                    onInfoTooltip={handleRegisterClick}
+                />
+            } /> 
+            <Route exact path="/sign-in" element={
+                <Login 
+                    setCurrentRoute={setCurrentRoute}
+                    loggedIn={loggedIn}
+                />
+            } />
+        </Routes>
+        {loggedIn && <Footer />}       
         <ImagePopup 
             data={selectedCard}
             isOpen={isImagePopupOpen}

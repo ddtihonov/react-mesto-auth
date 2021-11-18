@@ -16,7 +16,7 @@ export default function Card (props) {
         isLiked ? 'cell__heart_black' : ''
     }`;
 
-    function сardClick () {
+    function cardClick () {
         props.onCardClick(props.data);
     }
 
@@ -31,7 +31,7 @@ export default function Card (props) {
     return (
         <li className="cell">
         <button className={cardDeleteButtonClassName} type="button" aria-label="корзина" onClick={handleDeleteClick}></button>
-        <a className="cell__image-link"  href="#" onClick={сardClick}><img className="cell__image" src={props.data.link} alt={props.data.name}/></a>
+        <a className="cell__image-link"  href="#" onClick={cardClick}><img className="cell__image" src={props.data.link} alt={props.data.name}/></a>
         <div className="cell__info">
             <h2 className="cell__caption">{props.data.name}</h2>
             <div className="cell__like">

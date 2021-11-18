@@ -1,32 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
-class Register extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            username: '',
-            password: ''
-    }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+export default function Register ({setCurrentRoute}) {
 
-    }
-    handleChange(e) {
-        const {name, value} = e.target;
-        this.setState({
-        [name]: value
-        });
-    }
-    handleSubmit(e){
-        e.preventDefault();
-    }
+    useEffect(() => {
+        setCurrentRoute('/sign-up');
+    }, []);
 
-    render(){
         return(
         <div className="register">
             <h2 className="register__title">Регистрация</h2>
-            <form className="register__form"  onSubmit={this.handleSubmit}>
+            <form className="register__form">
                 <label className="register__label">
                     <input className="register__input"
                     type="email" 
@@ -46,7 +31,7 @@ class Register extends React.Component {
                     maxLength="20" required/>
                     <span className="register__input-error password-input-error form__input-error"></span>
                 </label>
-                <button className="register__button" type="submit" onClick={props.onInfoTooltip}>Зарегистрироваться</button>
+                <button className="register__button" type="submit">Зарегистрироваться</button>
             </form>
             <div className="register__box">
             <p className="register__text" >Уже зарегистрированы?</p>
@@ -54,7 +39,4 @@ class Register extends React.Component {
             </div>
         </div>
     )
-    }
 }
-
-export default Register;
