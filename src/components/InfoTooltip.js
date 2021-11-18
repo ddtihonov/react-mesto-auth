@@ -1,19 +1,26 @@
 import React from 'react';
-
-import PopupWithForm  from './PopupWithForm';
+import successfully from '../images/successfully.svg'
+import unsuccessfully from '../images/unsuccessfully.svg'
 
 export default function InfoTooltip (props) {
 
     return (
-        <PopupWithForm name="delete" 
-        text="Что-то пошло не так!
-        Попробуйте ещё раз." 
-        image=""
-        alt=""
-        isOpen={props.isOpen}
-        onClose={props.onClose}
-        />
+        <div className={`popup popup_type_${props.name} ${props.isOpen ? 'popup_opened' : ''}`}  onClick={props.onClose}>
+            <div className="popup__container">
+                <button className="popup__close-icon link-aim" type="button" aria-label="закрыть" onClick={props.onClose}></button>
+                <div className="popup__box">
+                    <img
+                        src={props.registrationСompleted ? successfully : unsuccessfully}
+                        alt={props.registrationСompleted ? "галочка" : "крестик"}
+                        className="popup__icon"
+                    />
+                    <p className="popup__text">
+                        {props.registrationСompleted
+                        ? 'Вы успешно зарегистрировались!'
+                        : 'Что-то пошло не так! Попробуйте ещё раз.'}
+                    </p>
+                </div>
+            </div> 
+        </div>
     )
-
-
 }

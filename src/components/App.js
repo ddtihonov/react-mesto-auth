@@ -157,6 +157,25 @@ export default function App() {
                     console.log(`Внимание! ${err}`);
                 });
     }
+    // обработчики закрытия
+    function handleClosePopup(evt) {
+        if (
+            evt.target.classList.contains('popup')
+            || evt.target.classList.contains('popup__close-icon')
+        ) {
+            closeAllPopups();
+        }
+    }
+
+    useEffect(() => {
+        function handleEscClose(evt) {
+            if (evt.keyCode === 27) closeAllPopups();
+        }
+    
+        document.addEventListener('keydown', handleEscClose);
+    
+        return () => document.removeEventListener('keydown', handleEscClose);
+    }, []);
 
 return (
 <div className="page">
@@ -194,16 +213,16 @@ return (
         <ImagePopup 
             data={selectedCard}
             isOpen={isImagePopupOpen}
-            onClose={closeAllPopups}
+            onClose={handleClosePopup}
         />
         <EditAvatarPopup 
             isOpen={isEditAvatarPopupOpen}
-            onClose={closeAllPopups}
+            onClose={handleClosePopup}
             onUpdateAvatar={handleUpdateAvatar}
         />
         <EditProfilePopup 
             isOpen={isEditProfilePopupOpen} 
-            onClose={closeAllPopups} 
+            onClose={handleClosePopup} 
             onUpdateUser={handleUpdateUser}
             />
         <AddPlacePopup 
@@ -213,11 +232,13 @@ return (
             />     
         <DeleteCardPopup
             isOpen={isDeleteCardPopupOpen} 
-            onClose={closeAllPopups} 
+            onClose={handleClosePopup} 
         />
         <InfoTooltip
+            name="registration"
             isOpen={isInfoTooltip} 
-            onClose={closeAllPopups} 
+            onClose={handleClosePopup}
+            registrationСompleted={1} 
         />
     </CurrentUserContext.Provider>
 </div>
