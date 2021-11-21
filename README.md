@@ -22,4 +22,4 @@ ___
 * Кроссбраузерность и адаптивная верстка;
 * БЭМ;
 
-https://ddtihonov.github.io/react-mesto-auth/
+https://ddtihonov.github.io/react-mesto-auth/sign-in
