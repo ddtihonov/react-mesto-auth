@@ -1,8 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-export default function Register ({setCurrentRoute}) {
+export default function Register ({setCurrentRoute, onRegister, onInfoTooltip}) {
+
+    const [registerData, setRegisterData] = useState({
+        email: '',
+        password: '',
+    });
+
+    function handleChangeRegisterData(evt) {
+        const { name, value } = evt.target;
+    
+        setRegisterData({
+            ...registerData,
+            [name]: value,
+        });
+    }
+
+    function handleSubmit(evt) {
+        evt.preventDefault();
+    
+        onRegister({ registerData, setRegisterData });
+    }
+    
 
     useEffect(() => {
         setCurrentRoute('/sign-up');
@@ -11,11 +32,13 @@ export default function Register ({setCurrentRoute}) {
         return(
         <div className="register">
             <h2 className="register__title">Регистрация</h2>
-            <form className="register__form">
+            <form className="register__form" onSubmit={handleSubmit}>
                 <label className="register__label">
                     <input className="register__input"
                     type="email" 
-                    name="email" 
+                    name="email"
+                    value={registerData.email || ''}
+                    onChange={handleChangeRegisterData} 
                     id="email-input" placeholder="Email" 
                     minLength="6" maxLength="20" 
                     required/>
@@ -24,7 +47,9 @@ export default function Register ({setCurrentRoute}) {
                 <label className="register__label">
                     <input className="register__input"
                     type="password" 
-                    name="password" 
+                    name="password"
+                    value={registerData.password || ''}
+                    onChange={handleChangeRegisterData} 
                     id="password-input" 
                     placeholder="Пароль"  
                     minLength="6" 
