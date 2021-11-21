@@ -6,10 +6,32 @@ class Auth {
 
     register(registerData) {
         return fetch(`${this.baseAuthUrl}/signup`, {
-        method: 'POST',
-        headers: this.headers,
-        body: JSON.stringify(registerData),
-    })
+            method: 'POST',
+            headers: this.headers,
+            body: JSON.stringify(registerData),
+            })
+
+        .then(this._checkError);
+    }
+
+    authorize(loginData) {
+        return fetch(`${this.baseAuthUrl}/signin`, {
+            method: 'POST',
+            headers: this.headers,
+            body: JSON.stringify(loginData),
+            })
+
+        .then(this._checkError);
+    }
+
+    checkToken(token) {
+        return fetch(`${this.baseAuthUrl}/users/me`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        })
         .then(this._checkError);
     }
 
@@ -27,6 +49,3 @@ const auth = new Auth({
 });
 
 export default auth 
-
-/*email: "p.luyda@yandex.ru"
-_id: "619a262b96bdf2001aa94fc3"*/

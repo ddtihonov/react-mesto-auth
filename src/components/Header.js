@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import logo from '../images/Logo.svg';
 
 export default function Header(props) {
-console.log(props)
+    
     return (
     <header className="header">
         <div className="header__container">

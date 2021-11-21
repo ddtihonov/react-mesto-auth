@@ -224,6 +224,30 @@ export default function App() {
             });
     }
 
+    //проверка токена
+    useEffect(() => {
+        function handleTokenCheck() {
+            if (localStorage.getItem('token')) {
+            const token = localStorage.getItem('token');
+    
+            auth.checkToken(token)
+                .then((data) => {
+                    if (data) {
+                        console.log(data)
+                        setCurrentEmail(data.data.email);
+                        setLoggedIn(true);
+                        /*history.push('/');*/
+                    }
+                    })
+                    .catch((err) => {
+                        console.log(`Внимание! ${err}`);
+                    });
+            }
+        }
+    
+        handleTokenCheck();
+    }, []);
+
 return (
 <div className="page">
     <CurrentUserContext.Provider value={currentUser}>
@@ -254,12 +278,15 @@ return (
                     setCurrentRoute={setCurrentRoute}
                     onRegister={handleRegister}
                     onInfoTooltip={handleRegisterClick}
-                    setSuccessRegister={setSuccessRegister}
+                    successRegister={successRegister}
+                    loggedIn={loggedIn}
                 />
             } /> 
             <Route exact path="/sign-in" element={
                 <Login 
                     setCurrentRoute={setCurrentRoute}
+                    onLogin={handleAuthorize}
+                    setSuccessRegister={setSuccessRegister}
                     loggedIn={loggedIn}
 
                 />
@@ -300,3 +327,9 @@ return (
 </div>
 );
 }
+
+/*email: "p.luyda@yandex.ru"
+_id: "619a262b96bdf2001aa94fc3"
+
+token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTlhMjYyYjk2YmRmMjAwMWFhOTRmYzMiLCJpYXQiOjE2Mzc1MTAwODV9.ya40SGyfWYnZAE2gUxlxXjmsJFSfUjpRAhd7_CBkO8c"
+*/
