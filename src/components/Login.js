@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 
 
-export default function Login ({setCurrentRoute,  onLogin, loggedIn, setSuccessRegister}) {
+export default function Login ({setCurrentRoute,  onLogin, setSuccessRegister}) {
 
     const [loginData, setLoginData] = useState({
         email: '',
@@ -28,11 +28,6 @@ export default function Login ({setCurrentRoute,  onLogin, loggedIn, setSuccessR
         setSuccessRegister(false);
         setCurrentRoute('/sign-in');
     }, []);
-
-    /*useEffect(() => {
-        if (loggedIn) history.push('/');
-    }, [loggedIn]);*/
-
 
     
         return(

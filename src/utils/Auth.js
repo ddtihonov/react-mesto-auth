@@ -14,11 +14,11 @@ class Auth {
         .then(this._checkError);
     }
 
-    authorize(loginData) {
+    authorize(data) {
         return fetch(`${this.baseAuthUrl}/signin`, {
             method: 'POST',
             headers: this.headers,
-            body: JSON.stringify(loginData),
+            body: JSON.stringify(data),
             })
 
         .then(this._checkError);

@@ -20,6 +20,8 @@ import AddPlacePopup from './AddPlacePopup.js';
 
 export default function App() {
 
+    const navigate = useNavigate();
+
     //стейты popups
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -31,8 +33,8 @@ export default function App() {
     const [selectedCard, setSelectedCard] = useState({});
     const [currentUser, setCurrentUser] = useState({});
     const [cards, setCards] = useState([]);
+    
     const [currentEmail, setCurrentEmail] = useState('');
-
     const [successRegister, setSuccessRegister] = useState(false);
 
     // стейт маршрутов
@@ -97,6 +99,15 @@ export default function App() {
         setImagePopupOpen(false);
         setIsDeleteCardPopupOpen(false);
         setIsInfoTooltip(false);
+    }
+
+    //выход
+    function handleOutput() {
+        if (localStorage.getItem('token')) {
+            localStorage.removeItem('token');
+            navigate('/sign-in');
+            setLoggedIn(false);
+        }
     }
 
     //управление лайками
@@ -187,6 +198,7 @@ export default function App() {
             .then(() => {
                 setIsInfoTooltip(true);
                 setSuccessRegister(true);
+                navigate('/sign-in');
     
             setRegisterData({
                 email: '',
@@ -207,10 +219,8 @@ export default function App() {
     function handleAuthorize({ loginData, setLoginData }) {
         auth.authorize(loginData)
             .then((data) => {
-                if (data?.token) {
+                if (data.token) {
                     localStorage.setItem('token', data.token);
-                    setCurrentEmail(loginData.email);
-                    setLoggedIn(true);
     
                     setLoginData({
                         email: '',
@@ -224,29 +234,29 @@ export default function App() {
             });
     }
 
-    //проверка токена
     useEffect(() => {
         function handleTokenCheck() {
             if (localStorage.getItem('token')) {
             const token = localStorage.getItem('token');
-    
             auth.checkToken(token)
                 .then((data) => {
                     if (data) {
-                        console.log(data)
                         setCurrentEmail(data.data.email);
                         setLoggedIn(true);
-                        /*history.push('/');*/
+                        navigate('/');
                     }
-                    })
-                    .catch((err) => {
-                        console.log(`Внимание! ${err}`);
-                    });
-            }
+                })
+                .catch((err) => {
+                    console.log(`Внимание! ${err}`);
+                });
         }
-    
-        handleTokenCheck();
-    }, []);
+    }
+
+    handleTokenCheck();
+}, []);
+
+
+
 
 return (
 <div className="page">
@@ -254,6 +264,8 @@ return (
         <Header 
             currentRoute={currentRoute}
             loggedIn={loggedIn}
+            email={currentEmail}
+            onOut={handleOutput}
         />
         <Routes>
             <Route
@@ -279,7 +291,6 @@ return (
                     onRegister={handleRegister}
                     onInfoTooltip={handleRegisterClick}
                     successRegister={successRegister}
-                    loggedIn={loggedIn}
                 />
             } /> 
             <Route exact path="/sign-in" element={
@@ -287,8 +298,6 @@ return (
                     setCurrentRoute={setCurrentRoute}
                     onLogin={handleAuthorize}
                     setSuccessRegister={setSuccessRegister}
-                    loggedIn={loggedIn}
-
                 />
             } />
         </Routes>
@@ -327,9 +336,4 @@ return (
 </div>
 );
 }
-
-/*email: "p.luyda@yandex.ru"
-_id: "619a262b96bdf2001aa94fc3"
-
-token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTlhMjYyYjk2YmRmMjAwMWFhOTRmYzMiLCJpYXQiOjE2Mzc1MTAwODV9.ya40SGyfWYnZAE2gUxlxXjmsJFSfUjpRAhd7_CBkO8c"
-*/
+    
