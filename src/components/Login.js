@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 
 
-export default function Login ({setCurrentRoute,  onLogin, setSuccessRegister}) {
+export default function Login ({setCurrentRoute,  onLogin, loggedIn, navigate}) {
 
     const [loginData, setLoginData] = useState({
         email: '',
@@ -25,7 +25,6 @@ export default function Login ({setCurrentRoute,  onLogin, setSuccessRegister}) 
         }
 
     useEffect(() => {
-        setSuccessRegister(false);
         setCurrentRoute('/sign-in');
     }, []);
 

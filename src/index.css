@@ -84,12 +84,6 @@
     margin-bottom: 27px;
 }
 
-@media (max-width: 768px){
-    .header__burger{
-        display: flex;
-    }
-}
-
 
 .menu__icon  {
     display: none;

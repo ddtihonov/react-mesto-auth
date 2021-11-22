@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-export default function Register ({setCurrentRoute, onRegister, onInfoTooltip, successRegister }) {
+export default function Register ({setCurrentRoute, onRegister }) {
 
     const [registerData, setRegisterData] = useState({
         email: '',

@@ -196,8 +196,8 @@ export default function App() {
     function handleRegister({ registerData, setRegisterData }) {
         auth.register(registerData)
             .then(() => {
-                setIsInfoTooltip(true);
                 setSuccessRegister(true);
+                setIsInfoTooltip(true);
                 navigate('/sign-in');
     
             setRegisterData({
@@ -220,6 +220,8 @@ export default function App() {
         auth.authorize(loginData)
             .then((data) => {
                 if (data.token) {
+                    setLoggedIn(true)
+                    navigate('/')
                     localStorage.setItem('token', data.token);
     
                     setLoginData({
@@ -268,12 +270,9 @@ return (
             onOut={handleOutput}
         />
         <Routes>
-            <Route
-                path="/"
-                exact
-                element={
-                    <ProtectedRoute loggedIn={loggedIn}>
-                        <Main
+            <Route exact path='/'  element={
+                <ProtectedRoute loggedIn={loggedIn}>
+                    <Main
                         onEditAvatar={handleEditAvatarClick}
                         onAddPlace={handleAddPlaceClick}
                         onEditProfile={handleEditProfileClick}
@@ -281,8 +280,8 @@ return (
                         cards={cards}
                         onCardLike={handleCardLike}
                         onCardDelete={handleCardDelete}
-                        />
-                    </ProtectedRoute>    
+                    />
+                </ProtectedRoute>    
                 }
             />
             <Route exact path="/sign-up" element={
@@ -297,7 +296,9 @@ return (
                 <Login 
                     setCurrentRoute={setCurrentRoute}
                     onLogin={handleAuthorize}
-                    setSuccessRegister={setSuccessRegister}
+                    navigate={navigate}
+                    loggedIn={loggedIn}
+
                 />
             } />
         </Routes>
@@ -319,7 +320,7 @@ return (
             />
         <AddPlacePopup 
             isOpen={isAddPlacePopupOpen} 
-            onClose={closeAllPopups} 
+            onClose={handleClosePopup} 
             onAddCard={handleAddCard}
             />     
         <DeleteCardPopup

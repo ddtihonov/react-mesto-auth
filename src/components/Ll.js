@@ -1,19 +1,18 @@
-import React, { useState} from 'react';
-import { Link } from 'react-router-dom'; 
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useState } from 'react'; 
 import logo from '../images/Logo.svg';
 
 export default function Header(props) {
 
     const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-    function MobileOpen () {}
-
     return (
     <header className="header">
-        <div className="header__burger">
+        <div className={`header__burger ${isMobileOpen ? 'active' : ''}`} >
             <p className="header__text" >{props.email}</p>
             <Link
-                to="/sign-in"
+                to="/"
                 className="header__link_mobile"
                 onClick={props.onOut}>
                 Выйти
@@ -22,7 +21,7 @@ export default function Header(props) {
         <div className="header__container">
             <img src={logo} alt="Лого" className="header__logo"/>
             {props.loggedIn && 
-                <div className="menu__icon">
+                <div className="menu__icon" onClick={setIsMobileOpen(true)}>
                     <span></span>
                 </div>
             }
@@ -31,7 +30,7 @@ export default function Header(props) {
                     <>
                         <p className="header__text" >{props.email}</p>
                         <Link
-                        to="/sign-in"
+                        to="/"
                         className="header__link"
                         onClick={props.onOut}
                         >

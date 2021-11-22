@@ -4,6 +4,8 @@
     border-radius: 50%;
     margin-right: 30px;
     transition: 2s;
+    padding: 0;
+    border: 0;
 }
 
 .profile__image-link:hover{
