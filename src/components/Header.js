@@ -4,27 +4,40 @@ import logo from '../images/Logo.svg';
 
 export default function Header(props) {
 
-    const [isMobileOpen, setIsMobileOpen] = useState(false);
+    const [isDataOpen, setIsDataOpen] = useState(false);
 
-    function MobileOpen () {}
+    function openData () {
+        setIsDataOpen(true)
+    }
+
+    function closeData () {
+        setIsDataOpen(false)
+    }
 
     return (
     <header className="header">
-        <div className="header__burger">
-            <p className="header__text" >{props.email}</p>
-            <Link
-                to="/sign-in"
-                className="header__link_mobile"
-                onClick={props.onOut}>
-                Выйти
-            </Link>                
+        <div className="header__size">
+            <div className={`header__burger ${isDataOpen ? 'active' : ''}`}>
+                <p className="header__text" >{props.email}</p>
+                <Link
+                    to="/sign-in"
+                    className="header__link_mobile"
+                    onClick={props.onOut}>
+                    Выйти
+                </Link>                
+            </div>
         </div>
         <div className="header__container">
             <img src={logo} alt="Лого" className="header__logo"/>
-            {props.loggedIn && 
-                <div className="menu__icon">
+            {props.loggedIn &&
+            <> 
+                <div className={`menu__icon ${isDataOpen ? 'close' : ''}`} onClick={openData}>
                     <span></span>
                 </div>
+                <div className="header__size_close-icon">
+                    <button className={`header__close-icon ${isDataOpen ? 'active' : ''}`} type="button" aria-label="закрыть" onClick={closeData}></button>
+                </div>
+            </>
             }
             <div className="header__box">
                 {props.loggedIn ? (
