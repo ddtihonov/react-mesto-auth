@@ -18,6 +18,7 @@ import EditAvatarPopup from './EditAvatarPopup.js'
 import AddPlacePopup from './AddPlacePopup.js';
 
 
+
 export default function App() {
 
     const navigate = useNavigate();
@@ -78,10 +79,6 @@ export default function App() {
         setIsEditProfilePopupOpen(true);
     }
 
-    const handleDeleteCardClick = () => {
-        setIsDeleteCardPopupOpen(true);
-    }
-
     const handleRegisterClick = () => {
         setIsInfoTooltip(true);
     }
@@ -113,7 +110,6 @@ export default function App() {
     //управление лайками
     function handleCardLike(card) {
         const isLiked = card.likes.some((i) => i._id === currentUser._id);
-    
         api.changeLikeCardStatus(card._id, !isLiked)
             .then((newCard) => {
                 setCards((state) =>
@@ -204,11 +200,19 @@ export default function App() {
                 email: '',
                 password: '',
             });
+
+            setTimeout(() => {
+                setIsInfoTooltip(false)
+            },
+            1000);
         })
             .catch((err) => {
                 setSuccessRegister(false);
                 setIsInfoTooltip(true);
-    
+                setTimeout(() => {
+                    setIsInfoTooltip(false)
+                },
+                1000);
             
             
                 console.log(`Внимание! ${err}`);

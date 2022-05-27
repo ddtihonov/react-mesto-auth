@@ -29,7 +29,7 @@ export default function Card (props) {
     }
 
     return (
-        <li className="cell">
+    <li className="cell">
         <button className={cardDeleteButtonClassName} type="button" aria-label="корзина" onClick={handleDeleteClick}></button>
         <a className="cell__image-link"  href="#" onClick={cardClick}><img className="cell__image" src={props.data.link} alt={props.data.name}/></a>
         <div className="cell__info">
